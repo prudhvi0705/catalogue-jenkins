@@ -26,12 +26,11 @@ pipeline {
             }
         }
         //This is the Test
-        stage('Test') {
+        stage('Install dependencies') {
             steps {
                 script{
                     sh """
-                    echo "This is the test stage"
-                    echo $COURSE
+                        npm install
                     """
                 }
             }
