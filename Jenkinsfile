@@ -35,6 +35,15 @@ pipeline {
                 }
             }
         }
+         stage('Build image') {
+            steps {
+                script{
+                    sh """
+                        docker build -t prudhvimv/catalogue:${appVersion} .
+                    """
+                }
+            }
+        }
         //This is deploy
         stage('Deploy') {
             // input {
