@@ -52,6 +52,7 @@ pipeline {
                 }
             }
         }
+    }
         //This is deploy
         stage('Deploy') {
             // input {
