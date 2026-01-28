@@ -39,7 +39,7 @@ pipeline {
             }
         }
 
-                stage('test dependencies') {
+        stage('test dependencies') {
             steps {
                 script{
                     sh """
@@ -48,7 +48,7 @@ pipeline {
                 }
             }
         }
-        stage("build & SonarQube analysis") {
+        stage("sonar scanner") {
             environment {
                 def scannerHome = tool 'sonar-8.0'
             }
@@ -60,7 +60,17 @@ pipeline {
               }
             }
           }
-         stage('Build image') {
+        
+        stage('Quality Gate') {
+            steps {
+                timeout(time: 1, unit: 'HOURS') {
+                    // Wait for the quality gate status
+                    // abortPipeline: true will fail the Jenkins job if the quality gate is 'FAILED'
+                    waitForQualityGate abortPipeline: true 
+                }
+            }
+        }
+        stage('Build image') {
             steps {
                 script{
                     withAWS(region:'us-east-1',credentials:'aws-creds') {
